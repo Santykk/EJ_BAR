@@ -76,6 +76,7 @@ export function InventoryManager() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">Gestión de Inventario</h2>
         <button
@@ -87,6 +88,7 @@ export function InventoryManager() {
         </button>
       </div>
 
+      {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
@@ -99,6 +101,7 @@ export function InventoryManager() {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
+
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
@@ -113,6 +116,7 @@ export function InventoryManager() {
           </select>
         </div>
 
+        {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProducts.map((product) => (
             <div
@@ -130,6 +134,7 @@ export function InventoryManager() {
                       setEditingProduct(product);
                       setShowForm(true);
                     }}
+                    title="Editar producto"
                     className="text-gray-400 hover:text-gray-600 transition-colors"
                   >
                     <Edit2 className="w-4 h-4" />
@@ -137,6 +142,7 @@ export function InventoryManager() {
                   {isAdmin && (
                     <button
                       onClick={() => deleteProduct(product.id)}
+                      title="Eliminar producto"
                       className="text-red-400 hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -144,7 +150,8 @@ export function InventoryManager() {
                   )}
                 </div>
               </div>
-              
+
+              {/* Price and Stock */}
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Precio:</span>
@@ -152,9 +159,11 @@ export function InventoryManager() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Stock:</span>
-                  <span className={`font-medium ${
-                    product.stock <= product.min_stock ? 'text-red-600' : 'text-green-600'
-                  }`}>
+                  <span
+                    className={`font-medium ${
+                      product.stock <= product.min_stock ? 'text-red-600' : 'text-green-600'
+                    }`}
+                  >
                     {product.stock}
                   </span>
                 </div>
@@ -169,6 +178,7 @@ export function InventoryManager() {
           ))}
         </div>
 
+        {/* No products */}
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
             <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -177,6 +187,7 @@ export function InventoryManager() {
         )}
       </div>
 
+      {/* Product Form Modal */}
       {showForm && (
         <ProductForm
           product={editingProduct}

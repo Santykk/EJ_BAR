@@ -49,9 +49,10 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
-        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-md sm:max-w-lg animate-fadeIn">
+        {/* Header */}
+        <div className="flex justify-between items-center p-5 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900">
             Editar Usuario
           </h3>
@@ -63,9 +64,10 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-5 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Nombre Completo
             </label>
             <input
@@ -74,11 +76,12 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Nombre del usuario"
+              required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Rol
             </label>
             <select
@@ -92,7 +95,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Teléfono
             </label>
             <input
@@ -104,18 +107,19 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             />
           </div>
 
-          <div className="flex space-x-3 pt-4">
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center"
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center"
             >
               <Save className="w-4 h-4 mr-2" />
               {saving ? 'Guardando...' : 'Guardar'}

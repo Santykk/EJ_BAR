@@ -28,10 +28,15 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Header fijo en la parte superior */}
       <Header onAdminPanelClick={() => setActiveTab('admin')} />
+
+      {/* Navegación horizontal o lateral (según diseño) */}
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      {/* Contenido principal */}
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {renderContent()}
       </main>
     </div>

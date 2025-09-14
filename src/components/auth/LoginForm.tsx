@@ -6,11 +6,10 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { signIn, signUp } = useAuth();
+  const { signIn } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,9 +17,7 @@ export function LoginForm() {
     setError('');
 
     try {
-      const { error } = isSignUp
-        ? await signUp(email, password)
-        : await signIn(email, password);
+      const { error } = await signIn(email, password);
 
       if (error) {
         setError(error.message);
@@ -40,13 +37,10 @@ export function LoginForm() {
             <LogIn className="w-8 h-8 text-green-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {isSignUp ? 'Crear Cuenta' : 'BarManager'}
+            BarManager
           </h1>
           <p className="text-gray-600">
-            {isSignUp 
-              ? 'Crea tu cuenta para empezar' 
-              : 'Inicia sesión para gestionar tu bar'
-            }
+            Inicia sesión para gestionar tu bar
           </p>
         </div>
 
@@ -102,26 +96,17 @@ export function LoginForm() {
             disabled={loading}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading
-              ? 'Cargando...'
-              : isSignUp
-              ? 'Crear Cuenta'
-              : 'Iniciar Sesión'
-            }
+            {loading ? 'Cargando...' : 'Iniciar Sesión'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
+          <a
+            href="mailto:soporte@tucorreo.com?subject=Error%20en%20%mi%20%app"
             className="text-green-600 hover:text-green-700 font-medium transition-colors"
           >
-            {isSignUp
-              ? '¿Ya tienes cuenta? Inicia sesión'
-              : '¿No tienes cuenta? Créala aquí'
-            }
-          </button>
+            ¿Presentas errores? Contáctanos
+          </a>
         </div>
       </div>
     </div>

@@ -16,7 +16,8 @@ export function Header({ onAdminPanelClick }: HeaderProps) {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex flex-col sm:flex-row justify-between items-center h-16 gap-2 sm:gap-0">
+          {/* Left side: Logo & Company */}
           <div className="flex items-center">
             <div className="bg-green-600 rounded-lg p-2 mr-3">
               <BarChart3 className="w-6 h-6 text-white" />
@@ -25,23 +26,31 @@ export function Header({ onAdminPanelClick }: HeaderProps) {
               {settings?.company_name || 'BarManager'}
             </h1>
           </div>
-          
+
+          {/* Right side: User actions */}
           <div className="flex items-center space-x-4">
+            {/* Admin button */}
             {!loading && isAdmin && (
               <button
                 onClick={onAdminPanelClick}
-                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-gray-100 border border-transparent rounded-lg transition-colors"
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Panel Admin
               </button>
             )}
-            <span className="text-sm text-gray-600">
-              {user?.email}
-            </span>
+
+            {/* User info */}
+            {user?.email && (
+              <span className="text-sm text-gray-600 hidden sm:inline">
+                {user.email}
+              </span>
+            )}
+
+            {/* Logout */}
             <button
               onClick={signOut}
-              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-gray-100 border border-transparent rounded-lg transition-colors"
             >
               <LogOut className="w-4 h-4 mr-2" />
               Cerrar Sesión
