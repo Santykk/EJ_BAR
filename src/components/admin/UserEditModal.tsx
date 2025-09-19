@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { X, Save } from 'lucide-react';
+import { X, Save, Plus } from 'lucide-react';
 
 interface UserProfile {
-  id: string;
+  id?: string; // ahora es opcional
   full_name: string | null;
   role: string;
-  rating: number;
+  rating?: number;
   number_phone: string | null;
   user_name: string | null;
   user_password: string | null;
 }
 
 interface UserEditModalProps {
-  user: UserProfile;
+  user?: UserProfile; // puede ser undefined para crear
   onSave: () => void;
   onCancel: () => void;
 }
 
 export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
+  const isEditMode = !!user?.id;
+
   const [formData, setFormData] = useState({
-    full_name: user.full_name || '',
-    role: user.role,
-    number_phone: user.number_phone || '',
-    user_name: user.user_name || '',
-    user_password: user.user_password || '',
+    full_name: user?.full_name || '',
+    role: user?.role || 'user',
+    number_phone: user?.number_phone || '',
+    user_name: user?.user_name || '',
+    user_password: user?.user_password || '',
   });
   const [saving, setSaving] = useState(false);
 
@@ -33,22 +35,40 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
     setSaving(true);
 
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          full_name: formData.full_name || null,
-          role: formData.role,
-          number_phone: formData.number_phone || null,
-          user_name: formData.user_name || null,
-          user_password: formData.user_password || null,
-        })
-        .eq('id', user.id);
+      if (isEditMode) {
+        // 🔄 Actualizar usuario
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            full_name: formData.full_name || null,
+            role: formData.role,
+            number_phone: formData.number_phone || null,
+            user_name: formData.user_name || null,
+            user_password: formData.user_password || null,
+          })
+          .eq('id', user!.id);
 
-      if (error) throw error;
+        if (error) throw error;
+      } else {
+        // ➕ Crear usuario
+        const { error } = await supabase.from('profiles').insert([
+          {
+            full_name: formData.full_name || null,
+            role: formData.role,
+            number_phone: formData.number_phone || null,
+            user_name: formData.user_name || null,
+            user_password: formData.user_password || null,
+            rating: 5, // valor por defecto
+          },
+        ]);
+
+        if (error) throw error;
+      }
+
       onSave();
     } catch (error) {
-      console.error('Error updating user:', error);
-      alert('Error al actualizar el usuario');
+      console.error('Error guardando usuario:', error);
+      alert('Error al guardar el usuario');
     } finally {
       setSaving(false);
     }
@@ -57,9 +77,10 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
+        {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900">
-            Editar Usuario
+            {isEditMode ? 'Editar Usuario' : 'Crear Usuario'}
           </h3>
           <button
             onClick={onCancel}
@@ -69,6 +90,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
           </button>
         </div>
 
+        {/* Formulario */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Nombre completo */}
           <div>
@@ -81,6 +103,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Nombre del usuario"
+              required
             />
           </div>
 
@@ -124,6 +147,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="ejemplo.usuario"
+              required
             />
           </div>
 
@@ -138,10 +162,12 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="••••••••"
+              required={!isEditMode} // requerido solo al crear
             />
           </div>
 
-          <div className="flex space-x-3 pt-4">
+          {/* Botones */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
               type="button"
               onClick={onCancel}
@@ -154,8 +180,17 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               disabled={saving}
               className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center"
             >
-              <Save className="w-4 h-4 mr-2" />
-              {saving ? 'Guardando...' : 'Guardar'}
+              {isEditMode ? (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  {saving ? 'Guardando...' : 'Guardar'}
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-2" />
+                  {saving ? 'Creando...' : 'Crear Usuario'}
+                </>
+              )}
             </button>
           </div>
         </form>
