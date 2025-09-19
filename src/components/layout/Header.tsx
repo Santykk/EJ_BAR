@@ -54,7 +54,7 @@ export function Header({ onAdminPanelClick }: HeaderProps) {
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                   <div className="px-4 py-2 text-sm text-gray-700 border-b">
-                    {user?.email || 'Usuario'}
+                    {user?.user_name || 'Usuario'}
                   </div>
                   <button
                     onClick={signOut}
