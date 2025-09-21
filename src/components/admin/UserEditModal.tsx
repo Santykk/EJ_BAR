@@ -8,6 +8,8 @@ interface UserProfile {
   role: string;
   rating: number;
   number_phone: string | null;
+  user_name: string | null;
+  user_password: string | null;
 }
 
 interface UserEditModalProps {
@@ -21,6 +23,8 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
     full_name: user.full_name || '',
     role: user.role,
     number_phone: user.number_phone || '',
+    user_name: user.user_name || '',
+    user_password: user.user_password || '',
   });
   const [saving, setSaving] = useState(false);
 
@@ -35,6 +39,8 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
           full_name: formData.full_name || null,
           role: formData.role,
           number_phone: formData.number_phone || null,
+          user_name: formData.user_name || null,
+          user_password: formData.user_password || null,
         })
         .eq('id', user.id);
 
@@ -64,6 +70,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Nombre completo */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Nombre Completo
@@ -77,6 +84,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             />
           </div>
 
+          {/* Rol */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Rol
@@ -91,6 +99,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             </select>
           </div>
 
+          {/* Teléfono */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Teléfono
@@ -101,6 +110,34 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               onChange={(e) => setFormData({ ...formData, number_phone: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Número de teléfono"
+            />
+          </div>
+
+          {/* Nombre de usuario */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Nombre de Usuario
+            </label>
+            <input
+              type="text"
+              value={formData.user_name}
+              onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="ejemplo.usuario"
+            />
+          </div>
+
+          {/* Contraseña */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              value={formData.user_password}
+              onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="••••••••"
             />
           </div>
 

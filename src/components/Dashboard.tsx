@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from './layout/Header';
 import { Navigation } from './layout/Navigation';
-import {}
 import { Dashboard as DashboardView } from './dashboard/Dashboard';
 import { InventoryManager } from './inventory/InventoryManager';
 import { SalesManager } from './sales/SalesManager';
@@ -29,17 +28,12 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header fijo en la parte superior */}
+    <div className="min-h-screen bg-gray-50">
       <Header onAdminPanelClick={() => setActiveTab('admin')} />
-
-      {/* Navegación horizontal o lateral (según diseño) */}
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-
-      {/* Contenido principal */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderContent()}
       </main>
-    </div>
+    </Layout>
   );
 }

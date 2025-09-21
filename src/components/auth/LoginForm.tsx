@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { LogIn, Eye, EyeOff } from 'lucide-react';
 
 export function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,10 +17,12 @@ export function LoginForm() {
     setError('');
 
     try {
-      const { error } = await signIn(email, password);
+      const { error } = isSignUp
+        ? await signUp(email, password)
+        : await signIn(email, password);
 
       if (error) {
-        setError(error.message);
+        setError(error);
       }
     } catch (err) {
       setError('Ha ocurrido un error. Intenta de nuevo.');
@@ -52,16 +54,16 @@ export function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Correo electrónico
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+              Usuario
             </label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
-              placeholder="tu@email.com"
+              placeholder="tu_usuario"
               required
             />
           </div>
@@ -101,12 +103,16 @@ export function LoginForm() {
         </form>
 
         <div className="mt-6 text-center">
-          <a
-            href="mailto:soporte@tucorreo.com?subject=Error%20en%20mi%20%"
+          <button
+            type="button"
+            onClick={() => setIsSignUp(!isSignUp)}
             className="text-green-600 hover:text-green-700 font-medium transition-colors"
           >
-            ¿Presentas errores? Contáctanos
-          </a>
+            {isSignUp
+              ? '¿Ya tienes cuenta? Inicia sesión'
+              : '¿No tienes cuenta? Créala aquí'
+            }
+          </button>
         </div>
       </div>
     </div>
