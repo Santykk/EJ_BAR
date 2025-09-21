@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from './layout/Header';
 import { Navigation } from './layout/Navigation';
+import {}
 import { Dashboard as DashboardView } from './dashboard/Dashboard';
 import { InventoryManager } from './inventory/InventoryManager';
 import { SalesManager } from './sales/SalesManager';

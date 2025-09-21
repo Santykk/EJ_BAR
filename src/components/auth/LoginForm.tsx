@@ -102,7 +102,7 @@ export function LoginForm() {
 
         <div className="mt-6 text-center">
           <a
-            href="mailto:soporte@tucorreo.com?subject=Error%20en%20%mi%20%app"
+            href="mailto:soporte@tucorreo.com?subject=Error%20en%20mi%20%"
             className="text-green-600 hover:text-green-700 font-medium transition-colors"
           >
             ¿Presentas errores? Contáctanos
