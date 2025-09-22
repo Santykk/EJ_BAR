@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Header } from './layout/Header';
-import { Navigation } from './layout/Navigation';
+import { Layout } from './layout/Layout';
 import { Dashboard as DashboardView } from './dashboard/Dashboard';
 import { InventoryManager } from './inventory/InventoryManager';
 import { SalesManager } from './sales/SalesManager';
@@ -28,9 +27,7 @@ export function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header onAdminPanelClick={() => setActiveTab('admin')} />
-      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
+    <Layout activeTab={activeTab} onTabChange={setActiveTab}>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderContent()}
       </main>

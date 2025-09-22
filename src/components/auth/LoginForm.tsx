@@ -17,10 +17,7 @@ export function LoginForm() {
     setError('');
 
     try {
-      const { error } = isSignUp
-        ? await signUp(email, password)
-        : await signIn(email, password);
-
+      const { error } = await signIn(username, password);
       if (error) {
         setError(error);
       }
@@ -101,19 +98,6 @@ export function LoginForm() {
             {loading ? 'Cargando...' : 'Iniciar Sesión'}
           </button>
         </form>
-
-        <div className="mt-6 text-center">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-green-600 hover:text-green-700 font-medium transition-colors"
-          >
-            {isSignUp
-              ? '¿Ya tienes cuenta? Inicia sesión'
-              : '¿No tienes cuenta? Créala aquí'
-            }
-          </button>
-        </div>
       </div>
     </div>
   );
