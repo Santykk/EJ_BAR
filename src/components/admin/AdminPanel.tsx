@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useCompanySettings } from '../../hooks/useCompanySettings';
 import { Settings, Users, Building, Table, Save, Trash2, Edit2 } from 'lucide-react';
@@ -10,6 +10,8 @@ interface UserProfile {
   role: string;
   rating: number;
   number_phone: string | null;
+  user_name: string | null;
+  user_password: string | null;
 }
 
 export function AdminPanel() {
@@ -17,7 +19,7 @@ export function AdminPanel() {
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [editingUser, setEditingUser] = useState<UserProfile | null>(null);
   const [saving, setSaving] = useState(false);
-  const { settings, loading, updateSettings } = useCompanySettings();
+  const { settings, updateSettings } = useCompanySettings();
   
   const [formData, setFormData] = useState({
     company_name: '',

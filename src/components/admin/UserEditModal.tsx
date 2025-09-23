@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { supabase } from '../../lib/supabase';
-import { X, Save } from 'lucide-react';
+import React, { useState } from "react";
+import { supabase } from "../../lib/supabase";
+import { X, Save } from "lucide-react";
 
 interface UserProfile {
   id: string;
@@ -20,11 +20,11 @@ interface UserEditModalProps {
 
 export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
   const [formData, setFormData] = useState({
-    full_name: user.full_name || '',
+    full_name: user.full_name || "",
     role: user.role,
-    number_phone: user.number_phone || '',
-    user_name: user.user_name || '',
-    user_password: user.user_password || '',
+    number_phone: user.number_phone || "",
+    user_name: user.user_name || "",
+    user_password: user.user_password || "",
   });
   const [saving, setSaving] = useState(false);
 
@@ -34,7 +34,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
 
     try {
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update({
           full_name: formData.full_name || null,
           role: formData.role,
@@ -42,13 +42,13 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
           user_name: formData.user_name || null,
           user_password: formData.user_password || null,
         })
-        .eq('id', user.id);
+        .eq("id", user.id);
 
       if (error) throw error;
       onSave();
     } catch (error) {
-      console.error('Error updating user:', error);
-      alert('Error al actualizar el usuario');
+      console.error("Error updating user:", error);
+      alert("Error al actualizar el usuario");
     } finally {
       setSaving(false);
     }
@@ -78,7 +78,9 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             <input
               type="text"
               value={formData.full_name}
-              onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, full_name: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Nombre del usuario"
             />
@@ -91,7 +93,9 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             </label>
             <select
               value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
               <option value="user">Usuario</option>
@@ -107,7 +111,9 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             <input
               type="tel"
               value={formData.number_phone}
-              onChange={(e) => setFormData({ ...formData, number_phone: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, number_phone: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Número de teléfono"
             />
@@ -121,7 +127,9 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             <input
               type="text"
               value={formData.user_name}
-              onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, user_name: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="ejemplo.usuario"
             />
@@ -135,7 +143,9 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
             <input
               type="password"
               value={formData.user_password}
-              onChange={(e) => setFormData({ ...formData, user_password: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, user_password: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="••••••••"
             />
@@ -155,7 +165,7 @@ export function UserEditModal({ user, onSave, onCancel }: UserEditModalProps) {
               className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center"
             >
               <Save className="w-4 h-4 mr-2" />
-              {saving ? 'Guardando...' : 'Guardar'}
+              {saving ? "Guardando..." : "Guardar"}
             </button>
           </div>
         </form>
