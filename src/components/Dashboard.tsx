@@ -3,7 +3,7 @@ import { Layout } from './layout/Layout';
 import { Dashboard as DashboardView } from './dashboard/Dashboard';
 import { InventoryManager } from './inventory/InventoryManager';
 import { SalesManager } from './sales/SalesManager';
-import { SalesHistory } from './sales/SalesHistory';
+import { History } from './history/History';
 import { AdminPanel } from './admin/AdminPanel';
 
 export function Dashboard() {
@@ -18,7 +18,7 @@ export function Dashboard() {
       case 'sales':
         return <SalesManager />;
       case 'history':
-        return <SalesHistory />;
+        return <History />;
       case 'admin':
         return <AdminPanel />;
       default:

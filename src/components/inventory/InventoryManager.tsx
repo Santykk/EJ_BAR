@@ -7,7 +7,6 @@ import { useUserProfile } from "../../hooks/useUserProfile";
 
 export function InventoryManager() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [stockEntries, setStockEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -19,7 +18,6 @@ export function InventoryManager() {
 
   useEffect(() => {
     loadProducts();
-    loadStockEntries();
   }, []);
 
   const loadProducts = async () => {
@@ -31,20 +29,6 @@ export function InventoryManager() {
       console.error("Error loading products:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const loadStockEntries = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("stock_entries")
-        .select("id, product_id, quantity, created_at, products(title)")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setStockEntries(data || []);
-    } catch (error) {
-      console.error("Error loading stock entries:", error);
     }
   };
 
@@ -65,33 +49,6 @@ export function InventoryManager() {
     } catch (error) {
       console.error("Error deleting product:", error);
       alert("Error al eliminar el producto");
-    }
-  };
-
-  const addStock = async (product: Product) => {
-    const quantity = parseInt(prompt("¿Cuántas unidades deseas añadir?") || "0");
-    if (isNaN(quantity) || quantity <= 0) return;
-
-    try {
-      // Insertar en historial
-      const { error: entryError } = await supabase.from("stock_entries").insert([
-        { product_id: product.id, quantity },
-      ]);
-      if (entryError) throw entryError;
-
-      // Actualizar stock del producto
-      const { error: updateError } = await supabase
-        .from("products")
-        .update({ stock: product.stock + quantity })
-        .eq("id", product.id);
-      if (updateError) throw updateError;
-
-      alert("Stock añadido correctamente");
-      loadProducts();
-      loadStockEntries();
-    } catch (error) {
-      console.error("Error adding stock:", error);
-      alert("No se pudo añadir stock");
     }
   };
 
@@ -184,12 +141,7 @@ export function InventoryManager() {
                       </button>
                     </>
                   ) : (
-                    <button
-                      onClick={() => addStock(product)}
-                      className="bg-blue-600 text-white px-2 py-1 rounded-md text-xs hover:bg-blue-700"
-                    >
-                      Añadir Stock
-                    </button>
+                    <span className="text-xs text-gray-500">Solo vista</span>
                   )}
                 </div>
               </div>
@@ -226,49 +178,6 @@ export function InventoryManager() {
             <p className="text-gray-500">No se encontraron productos</p>
           </div>
         )}
-      </div>
-
-      {/* Tabla de ingresos de stock */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-bold mb-4">Ingresos de Stock</h3>
-        <table className="min-w-full border border-gray-200 text-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 border">Producto</th>
-              <th className="px-4 py-2 border">Cantidad</th>
-              <th className="px-4 py-2 border">Fecha</th>
-            </tr>
-          </thead>
-          <tbody>
-            {stockEntries.map((entry) => (
-              <tr key={entry.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 border">{entry.products?.title}</td>
-                <td className="px-4 py-2 border">{entry.quantity}</td>
-                <td className="px-4 py-2 border">
-                  {new Date(entry.created_at).toLocaleString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        {/* Totales por producto */}
-        <div className="mt-6">
-          <h4 className="font-semibold mb-2">Totales por producto</h4>
-          <ul className="list-disc pl-6 text-sm">
-            {Object.entries(
-              stockEntries.reduce<Record<string, number>>((acc, entry) => {
-                const name = entry.products?.title || "Sin nombre";
-                acc[name] = (acc[name] || 0) + entry.quantity;
-                return acc;
-              }, {})
-            ).map(([title, total]) => (
-              <li key={title}>
-                {title}: <span className="font-medium">{total}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
 
       {/* Formulario */}
