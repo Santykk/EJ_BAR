@@ -58,6 +58,15 @@ export function Dashboard() {
     }
   };
 
+function formatPrice(value: number | null | undefined) {
+  return new Intl.NumberFormat('es-CO', { 
+      style: 'currency', 
+      currency: 'COP', 
+      minimumFractionDigits: 2 
+  }).format(value || 0);
+};
+
+
   const StatCard = ({ icon: Icon, title, value, color }: any) => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-center">
@@ -100,7 +109,7 @@ export function Dashboard() {
           <StatCard
             icon={DollarSign}
             title="Ingresos Hoy"
-            value={`$${stats.totalRevenue.toFixed(2)}`}
+            value={`$${formatPrice(stats.totalRevenue)}`}
             color="bg-teal-500"
           />
         </div>

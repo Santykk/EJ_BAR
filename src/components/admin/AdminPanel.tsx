@@ -286,7 +286,7 @@ export function AdminPanel() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal */} 
       {editingUser && (
         <UserEditModal
           user={editingUser}

@@ -214,6 +214,14 @@ export function SalesManager() {
     }
   };
 
+  function formatPrice(value: number | null | undefined) {
+  return new Intl.NumberFormat('es-CO', { 
+      style: 'currency', 
+      currency: 'COP', 
+      minimumFractionDigits: 2 
+  }).format(value || 0);
+};
+
   const handleTableSelect = (tableNumber: number) => {
     setSelectedTable(tableNumber);
   };
@@ -277,7 +285,7 @@ export function SalesManager() {
                   <h4 className="font-medium text-gray-900">{product.title}</h4>
                   <p className="text-sm text-gray-600 mb-2">{product.category}</p>
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-green-600">${product.price.toFixed(2)}</span>
+                    <span className="font-bold text-green-600">${formatPrice(product.price)}</span>
                     <span className="text-xs bg-gray-100 px-2 py-1 rounded">
                       Stock: {product.stock}
                     </span>
@@ -302,7 +310,7 @@ export function SalesManager() {
               <div key={item.product.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex-1">
                   <p className="font-medium text-sm">{item.product.title}</p>
-                  <p className="text-xs text-gray-600">${item.product.price.toFixed(2)}</p>
+                  <p className="text-xs text-gray-600">${formatPrice(item.product.price)}</p>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
@@ -472,6 +480,14 @@ function SalesManagerOld() {
     }
   };
 
+  function formatPrice(value: number | null | undefined) {
+  return new Intl.NumberFormat('es-CO', { 
+      style: 'currency', 
+      currency: 'COP', 
+      minimumFractionDigits: 2 
+  }).format(value || 0);
+};
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -495,7 +511,7 @@ function SalesManagerOld() {
               <h4 className="font-medium text-gray-900">{product.title}</h4>
               <p className="text-sm text-gray-600 mb-2">{product.category}</p>
               <div className="flex justify-between items-center">
-                <span className="font-bold text-green-600">${product.price.toFixed(2)}</span>
+                <span className="font-bold text-green-600">${formatPrice(product.price)}</span>
                 <span className="text-xs bg-gray-100 px-2 py-1 rounded">
                   Stock: {product.stock}
                 </span>
@@ -517,7 +533,7 @@ function SalesManagerOld() {
             <div key={item.product.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div className="flex-1">
                 <p className="font-medium text-sm">{item.product.title}</p>
-                <p className="text-xs text-gray-600">${item.product.price.toFixed(2)}</p>
+                <p className="text-xs text-gray-600">${formatPrice(item.product.price)}</p>
               </div>
               <div className="flex items-center space-x-2">
                 <button
@@ -553,7 +569,7 @@ function SalesManagerOld() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-lg">Total:</span>
                 <span className="font-bold text-xl text-green-600">
-                  ${getTotalAmount().toFixed(2)}
+                  ${formatPrice(getTotalAmount())}
                 </span>
               </div>
             </div>

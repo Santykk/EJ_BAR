@@ -58,6 +58,14 @@ export function InventoryManager() {
     return matchesSearch && matchesCategory;
   });
 
+  function formatPrice(value: number | null | undefined) {
+  return new Intl.NumberFormat('es-CO', { 
+      style: 'currency', 
+      currency: 'COP', 
+      minimumFractionDigits: 2 
+  }).format(value || 0);
+};
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -149,7 +157,7 @@ export function InventoryManager() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Precio:</span>
-                  <span className="font-medium">${product.price.toFixed(2)}</span>
+                  <span className="font-medium">${formatPrice(product.price)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Stock:</span>

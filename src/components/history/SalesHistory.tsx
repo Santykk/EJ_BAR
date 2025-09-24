@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Sale } from '../../types';
 import { Calendar, DollarSign, Package, ShoppingCart } from 'lucide-react';
@@ -40,6 +40,15 @@ export function SalesHistory() {
     );
   };
 
+function formatPrice(value: number | null | undefined) {
+  return new Intl.NumberFormat('es-CO', { 
+      style: 'currency', 
+      currency: 'COP', 
+      minimumFractionDigits: 2 
+  }).format(value || 0);
+}; 
+
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -63,7 +72,7 @@ export function SalesHistory() {
             </div>
             <div>
               <p className="text-sm text-gray-600">Ingresos del Día</p>
-              <p className="text-2xl font-bold text-gray-900">${getTotalRevenue().toFixed(2)}</p>
+              <p className="text-2xl font-bold text-gray-900">${formatPrice(getTotalRevenue())}</p>
             </div>
           </div>
         </div>
@@ -120,7 +129,7 @@ export function SalesHistory() {
                       {new Date(sale.created_at).toLocaleTimeString('es-ES')}
                     </p>
                   </div>
-                  <span className="font-bold text-green-600">${sale.total.toFixed(2)}</span>
+                  <span className="font-bold text-green-600">${formatPrice(sale.total)}</span>
                 </div>
                 
                 <div className="space-y-2">
@@ -129,7 +138,7 @@ export function SalesHistory() {
                       <span className="text-gray-700">
                         {item.quantity}x {item.product_name || 'Producto'}
                       </span>
-                      <span className="text-gray-900">${item.total.toFixed(2)}</span>
+                      <span className="text-gray-900">${formatPrice(item.total)}</span>
                     </div>
                   ))}
                 </div>
