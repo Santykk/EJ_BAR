@@ -157,7 +157,7 @@ export function InventoryManager() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Precio:</span>
-                  <span className="font-medium">${formatPrice(product.price)}</span>
+                  <span className="font-medium">{formatPrice(product.price)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Stock:</span>

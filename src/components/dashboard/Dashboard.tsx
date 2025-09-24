@@ -109,7 +109,7 @@ function formatPrice(value: number | null | undefined) {
           <StatCard
             icon={DollarSign}
             title="Ingresos Hoy"
-            value={`$${formatPrice(stats.totalRevenue)}`}
+            value={`${formatPrice(stats.totalRevenue)}`}
             color="bg-teal-500"
           />
         </div>
