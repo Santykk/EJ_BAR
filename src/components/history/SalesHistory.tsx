@@ -72,7 +72,7 @@ function formatPrice(value: number | null | undefined) {
             </div>
             <div>
               <p className="text-sm text-gray-600">Ingresos del Día</p>
-              <p className="text-2xl font-bold text-gray-900">${formatPrice(getTotalRevenue())}</p>
+              <p className="text-2xl font-bold text-gray-900">{formatPrice(getTotalRevenue())}</p>
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ function formatPrice(value: number | null | undefined) {
                       {new Date(sale.created_at).toLocaleTimeString('es-ES')}
                     </p>
                   </div>
-                  <span className="font-bold text-green-600">${formatPrice(sale.total)}</span>
+                  <span className="font-bold text-green-600">{formatPrice(sale.total)}</span>
                 </div>
                 
                 <div className="space-y-2">
@@ -138,7 +138,7 @@ function formatPrice(value: number | null | undefined) {
                       <span className="text-gray-700">
                         {item.quantity}x {item.product_name || 'Producto'}
                       </span>
-                      <span className="text-gray-900">${formatPrice(item.total)}</span>
+                      <span className="text-gray-900">{formatPrice(item.total)}</span>
                     </div>
                   ))}
                 </div>
