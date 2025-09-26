@@ -12,7 +12,7 @@ export function InventoryManager() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const { isAdmin } = useUserProfile();
+  const { isAdmin } = useUserProfile(); // 👈 solo usamos isAdmin
 
   const categories = ["Bebidas", "Cervezas", "Licores", "Comidas", "Snacks", "Otros"];
 
@@ -52,6 +52,50 @@ export function InventoryManager() {
     }
   };
 
+  // 👇 Nueva función para usuarios que agregan stock
+  const addStock = async (productId: string) => {
+    const quantity = parseInt(prompt("¿Cuántas unidades quieres agregar?") || "0", 10);
+    if (!quantity || quantity <= 0) return;
+
+    try {
+      // 1. Obtenemos stock actual
+      const { data: product, error: fetchError } = await supabase
+        .from("products")
+        .select("stock")
+        .eq("id", productId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      const newStock = (product?.stock || 0) + quantity;
+
+      // 2. Actualizamos stock
+      const { error: updateError } = await supabase
+        .from("products")
+        .update({ stock: newStock })
+        .eq("id", productId);
+
+      if (updateError) throw updateError;
+
+      // 3. Insertamos entrada de stock
+      const { error: insertError } = await supabase.from("stock_entries").insert([
+        {
+          product_id: productId,
+          quantity,
+          created_at: new Date(),
+        },
+      ]);
+
+      if (insertError) throw insertError;
+
+      alert("Stock agregado correctamente");
+      loadProducts();
+    } catch (error) {
+      console.error("Error agregando stock:", error);
+      alert("No se pudo agregar stock");
+    }
+  };
+
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "" || product.category === selectedCategory;
@@ -59,12 +103,12 @@ export function InventoryManager() {
   });
 
   function formatPrice(value: number | null | undefined) {
-  return new Intl.NumberFormat('es-CO', { 
-      style: 'currency', 
-      currency: 'COP', 
-      minimumFractionDigits: 2 
-  }).format(value || 0);
-};
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 2,
+    }).format(value || 0);
+  }
 
   if (loading) {
     return (
@@ -149,7 +193,12 @@ export function InventoryManager() {
                       </button>
                     </>
                   ) : (
-                    <span className="text-xs text-gray-500">Solo vista</span>
+                    <button
+                      onClick={() => addStock(product.id)}
+                      className="text-green-600 hover:text-green-800 text-sm font-medium"
+                    >
+                      + Agregar stock
+                    </button>
                   )}
                 </div>
               </div>
