@@ -6,7 +6,6 @@ import { useCompanySettings } from '../../hooks/useCompanySettings';
 import { ShoppingCart, Plus, Minus, Trash2, Users } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { TableSelector } from './TableSelector';
-import { TableOrderSummary } from './TableOrderSummary';
 
 export function SalesManager() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -249,13 +248,6 @@ export function SalesManager() {
         selectedTable={selectedTable}
         onTableSelect={handleTableSelect}
         tableOrders={tableOrders}
-      />
-
-      <TableOrderSummary 
-        tableOrders={tableOrders}
-        onClearTable={clearTable}
-        onProcessAllSales={processAllSales}
-        processing={processing}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
